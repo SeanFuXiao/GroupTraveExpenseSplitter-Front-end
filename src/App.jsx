@@ -1,35 +1,44 @@
-import { useState } from 'react'
+import { useState, createContext, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar/NavBar';
+import Landing from './components/Landing/Landing';
+import Dashboard from './components/Dashboard/Dashboard';
+import SigninForm from "./components/SigninForm/SigninForm";
+import SignupForm from "./components/SignupForm/SignupForm";
+import * as authService from '../src/services/authService';
+import * as hootService from '../src/services/hootService';
 
-function App() {
-  const [count, setCount] = useState(0)
 
+
+
+export const AuthedUserContext = createContext(null);
+
+const App = ( ) => {
+  const [user, setUser] = useState(authService.getUser());
+  const handleSignout = () => {
+    authService.signout();
+    setUser(null);
+  };
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <AuthedUserContext.Provider value={user}>
+      <NavBar user={user} handleSignout={handleSignout}/>
+      <Routes>
+      {user ? (
+            <Route path="/" element={<Dashboard user={user} />} />
+          ) : (
+            <Route path="/" element={<Landing />} />
+          )}
+          <Route path='/signup' element={<SignupForm setUser={setUser} /> } />
+          <Route path='signin' element={<SigninForm setUser={setUser} />} />
+      </Routes>
+    </AuthedUserContext.Provider>
+    
     </>
-  )
-}
+  );
+};
 
 export default App
