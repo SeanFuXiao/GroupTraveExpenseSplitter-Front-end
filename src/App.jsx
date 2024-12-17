@@ -16,9 +16,29 @@ import * as hootService from '../src/services/hootService';
 
 export const AuthedUserContext = createContext(null);
 
-
-function App() {
-  console.log("!")
+const App = ( ) => {
+  const [user, setUser] = useState(authService.getUser());
+  const handleSignout = () => {
+    authService.signout();
+    setUser(null);
+  };
+  return (
+    <>
+    <AuthedUserContext.Provider value={user}>
+      <NavBar user={user} handleSignout={handleSignout}/>
+      <Routes>
+      {user ? (
+            <Route path="/" element={<Dashboard user={user} />} />
+          ) : (
+            <Route path="/" element={<Landing />} />
+          )}
+          <Route path='/signup' element={<SignupForm setUser={setUser} /> } />
+          <Route path='signin' element={<SigninForm setUser={setUser} />} />
+      </Routes>
+    </AuthedUserContext.Provider>
+    
+    </>
+  );
 };
 
 export default App
