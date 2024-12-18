@@ -5,11 +5,14 @@ import * as authService from '../../services/authService';
 
 const SigninForm = (props) => {
     const navigate = useNavigate();
-    const [message, setMessage] = useState(['']);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    /*const [message, setMessage] = useState(['']);
     const [formData, setFormData] = useState({ username: "", password: "", });
    const updateMessage = (msg) => {
-    setMessage(msg);
-};
+    setMessage(msg);*/
+
 const handleChange = (e) => {
     updateMessage("");
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,6 +31,7 @@ const handleSubmit = async (e) => {
 
    }
 };
+
  return ( 
     <main> 
         <h1>Log In</h1>

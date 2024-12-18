@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as authService from '../../services/authService';
 
-const SignupForm = (props) => {
+const SignupForm = () => {
     const navigate = useNavigate();
-    const [message, setMessage] = useState(['']);
-    const [formData, setFormData] = useState({ 
+    //const [email, setEmail] = useState(['']);
+    //const [password, setPassword] = useState([""]);
+    /*const [formData, setFormData] = useState({ 
         username: '',
         passwordConf: '',
-    });
+    });*/
      const updateMessage = (msg) => {
         setMessage(msg);
 

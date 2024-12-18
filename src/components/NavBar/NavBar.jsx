@@ -1,11 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthedUserContext } from "../../App";
 import { useContext } from 'react';
 
 
 const Navbar = ({ handleSignout }) => {
-  const user = useContext(AuthedUserContext);
+  //const user = useContext(AuthedUserContext);
+navigate("/signin");
   return (
     <>
       {user ? (
@@ -13,14 +14,16 @@ const Navbar = ({ handleSignout }) => {
           <ul>
             <li>Welcome, {user.username}</li>
             <li>
-              <Link to="/">Dashboard</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to='/hoots'>HOOTS</Link>
+              <Link to='/trips'>Trips</Link>
             </li>
             <li>
-              <Link to='/hoots/new'>NEW HOOT</Link>
+              <Link to='/trips/new'>NEW Trip</Link>
             </li>
+            <li><Link to="/signin">Sign In</Link></li>
+             <li><Link to="/signup">Sign Up</Link></li>
             <li>
               <Link to="" onClick={handleSignout}>
                 Sign Out
