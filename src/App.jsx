@@ -14,7 +14,7 @@ import TripDetails from './components/TripDetails/TripDetails';
 import TripList from './components/TripList/TripList';
 import AddExpense from './components/AddExpense/AddExpense';
 import CommentForm from './components/CommentForm/CommentForm';
-
+import './assets/app.css';
 
 
 //export const AuthedUserContext = createContext(null);
