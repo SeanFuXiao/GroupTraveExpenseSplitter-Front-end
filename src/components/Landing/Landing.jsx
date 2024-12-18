@@ -1,14 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
-    <main>
-      <h1>Hello, you are on the landing page for visitors.</h1>
-      <h3>
-        If you sign up for a new account, you will have the ability to sign in
-        and see your super secret dashboard
-      </h3>
-    </main>
+  <div className="landing-page">
+    <h1>Welcome to Group Travel Expenses Splitter</h1>
+    <p>Track and split your travel expenses with friends and family easily!</p>
+    <div>
+      <Link to="/signin" className="btn">Sign In</Link>
+      <Link to="/signup" className="btn">Sign Up</Link>
+    </div>
+  </div>
   );
 };
 

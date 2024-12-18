@@ -1,6 +1,30 @@
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
-const getHoots = async () => {
+
+import { getToken } from './authService'
+
+export const fetchTrips = async () => {
+  const token = getToken();
+
+  const response = await fetch(`${BACKEND_URL}/trips`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,  // Include the token in the Authorization header
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+
+
+
+
+
+
+/*const getTrips = async () => {
     try {
         const res = await fetch(`${BACKEND_URL}/hoots`, {
             heasers: {
@@ -9,15 +33,16 @@ const getHoots = async () => {
             },
 
         });
-        const hoots = await res.json();
-        console.log(hoots);
-        return hoots;
+       /* const trips = await res.json();
+        /*console.log(hoots);
+        //return hoots;
       } catch (err) {
         console.log(err, " omething wrong");
 
     }
-};
-const showHoot = async (hootId) => {
+  }
+
+const showtrip = async (hootId) => {
     try {
         const res = await fetch(`${BACKEND_URL}/hoots/${hootId}`, {
             headers: {
@@ -67,4 +92,26 @@ const create = async (formData) => {
     }
   };
 
-export { getHoots, showHoot, create, createComment };
+
+export { getHoots, showHoot, create, createComment };*/
+
+/*export const fetchTrips= async() => {
+  return [
+    { id:1, name: 'London Adventure', total: 1300, participants: ['']},
+    { id:2, name: 'Italy Road Trip', total:300, participants:[""]},
+
+  ]
+};
+export const fetchTripDetails = async (tripId) => {
+  if (tripId === '1') {
+    return {
+      id: 1,
+      name: 'London Adventure',
+      expenses: [
+        { id: 1, name: 'Dinner', amount: 100 },
+        { id: 2, name: 'Hotel', amount: 500 },
+      ],
+    };
+  }
+  return null;
+};*/

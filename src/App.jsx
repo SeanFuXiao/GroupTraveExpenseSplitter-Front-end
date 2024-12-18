@@ -2,19 +2,22 @@ import { useState, createContext, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Landing from './components/Landing/Landing';
 import Dashboard from './components/Dashboard/Dashboard';
 import SigninForm from "./components/SigninForm/SigninForm";
-import SignupForm from "./components/SignupForm/SignupForm";
+import SignupForm from './components/SignupForm/SignupForm';
 import * as authService from '../src/services/authService';
-import * as hootService from '../src/services/hootService';
+import * as tripService from './services/tripService';
+import TripDetails from './components/TripDetails/TripDetails';
+import TripList from './components/TripList/TripList';
+import AddExpense from './components/AddExpense/AddExpense';
+import CommentForm from './components/CommentForm/CommentForm';
+import './assets/app.css';
 
 
-
-
-export const AuthedUserContext = createContext(null);
+//export const AuthedUserContext = createContext(null);
 
 const App = ( ) => {
   const [user, setUser] = useState(authService.getUser());
@@ -33,7 +36,11 @@ const App = ( ) => {
             <Route path="/" element={<Landing />} />
           )}
           <Route path='/signup' element={<SignupForm setUser={setUser} /> } />
-          <Route path='signin' element={<SigninForm setUser={setUser} />} />
+          <Route path='/signin' element={<SigninForm setUser={setUser} />} />
+          <Route path="/trips" element={<TripList setUser={setUser} /> } />
+          <Route path="/trip/:id" element={<TripDetails setUser={setUser} />} />
+
+
       </Routes>
     </AuthedUserContext.Provider>
     
