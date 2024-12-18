@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; 
-import CommentForm from '../CommentForm';
+import CommentForm from '../CommentForm/CommentForm';
 import * as hootService from '../../services/tripService';
+import { getTripDetails } from '../../services/tripService';
+
 
 const TripDetails = () => {
     const { id } = useParams();
-    const [tripDetails, settripDetails] = useState(null);
+    const [tripDetails, setTripDetails] = useState(null);
 
     useEffect(() => {
+        async function fetchTripDetails () {
+            const details = await getTripDetails(id);
+        
         /*const fetchHoot = async () => {
           const { hoot } = await hootService.showHoot(id);
           setHoot(hoot);
         };*/
-        settripDetails({
+        setTripDetails({
             id, 
             name: 'London Adventure',
             expenses: [
@@ -22,7 +27,8 @@ const TripDetails = () => {
             ],
             participants: ["Luck","Max","Bob"],
         });
-      }, [id]);
+      }
+    }, [id]);
       if (!tripDetails) return <div> hold on loading </div>;
      
       return (

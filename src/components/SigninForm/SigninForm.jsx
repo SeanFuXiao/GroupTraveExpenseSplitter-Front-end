@@ -5,7 +5,7 @@ import * as authService from '../../services/authService';
 
 const SigninForm = (props) => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+    const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
 
     /*const [message, setMessage] = useState(['']);

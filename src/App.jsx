@@ -10,7 +10,10 @@ import SigninForm from "./components/SigninForm/SigninForm";
 import SignupForm from './components/SignupForm/SignupForm';
 import * as authService from '../src/services/authService';
 import * as tripService from './services/tripService';
-
+import TripDetails from './components/TripDetails/TripDetails';
+import TripList from './components/TripList/TripList';
+import AddExpense from './components/AddExpense/AddExpense';
+import CommentForm from './components/CommentForm/CommentForm';
 
 
 

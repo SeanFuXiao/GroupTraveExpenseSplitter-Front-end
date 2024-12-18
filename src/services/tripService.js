@@ -2,6 +2,7 @@ const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 
 import { getToken } from './authService'
+
 export const fetchTrips = async () => {
   const token = getToken();
 
