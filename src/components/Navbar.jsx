@@ -1,12 +1,16 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 //import { AuthedUserContext } from "../../App";
-import { useContext } from 'react';
+//import { useContext } from 'react';
 
 
-const Navbar = ({ handleSignout }) => {
+const Navbar = ({ handleSignout, user }) => {
   //const user = useContext(AuthedUserContext);
-navigate("/signin");
+  const navigate = useNavigate();
+
+  const handleSignInClick = () => {
+    navigate("/signin"); 
+  };
   return (
     <>
       {user ? (

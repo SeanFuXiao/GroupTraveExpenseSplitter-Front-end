@@ -1,9 +1,9 @@
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+//const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 
-import { getToken } from './authService'
+//import { getToken } from './authService'
 
-export const fetchTrips = async () => {
+/*export const fetchTrips = async () => {
   const token = getToken();
 
   const response = await fetch(`${BACKEND_URL}/trips`, {
@@ -16,8 +16,20 @@ export const fetchTrips = async () => {
 
   const data = await response.json();
   return data;
-};
+};*/
+import axios from 'axios';
 
+const API_URL = 'https://yourapi.com/api/';
+import { getToken } from './authService';
+
+
+export const fetchTrips = async () => {
+  const token = getToken();
+  const response = await axios.get(`${API_URL}/trips`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
 
 
 
