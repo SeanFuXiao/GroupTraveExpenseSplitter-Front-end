@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+/*import React, {useState } from 'react';
 import * as tripService from '../../services/tripService';
 
 const CommentForm = ({ onCommentSubmit }) => {
@@ -32,3 +32,4 @@ const CommentForm = ({ onCommentSubmit }) => {
 };
  
 export default CommentForm;
+*/

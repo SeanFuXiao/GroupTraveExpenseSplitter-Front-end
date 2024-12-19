@@ -1,20 +1,9 @@
-//import { AuthedUserContext } from '../../App';
-//import { useContext } from 'react'; 
-/*import React, { useState, useEffect } from "react";
-
+import React from 'react';
 import { Link } from 'react-router-dom';
+//import { getTrips } from "../../services/tripService";
 
-const Dashboard = () => {
-  return (
-    <div>
-    <h2>Your Home</h2>
-    <Link to="/trips">View Your Trips</Link>
-  </div>
-  );
-};
-
-/*const Dashboard = ({ }) => {
-   const [trips, setTrips]= useState([]); //useContext(AuthedUserContext);
+const TripList = () => {
+  const [trips, setTrips]= useState([]); //useContext(AuthedUserContext);
    
    useEffect(() => {
     setTrips([
@@ -63,5 +52,5 @@ const Dashboard = () => {
     </main>
   );
 };
-*/
 
+export default TripList;

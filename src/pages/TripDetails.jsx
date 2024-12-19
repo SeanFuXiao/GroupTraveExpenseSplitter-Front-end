@@ -1,11 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; 
-import CommentForm from '../CommentForm/CommentForm';
+//import CommentForm from '../CommentForm/CommentForm';
 
 //import { getTripDetails } from '../../services/tripService';
 
 
-const TripDetails = () => {
+function TripDetails() {
+    const { id } = useParams();
+    const [trip, setTrip] = useState(null);
+    const [expenses, setExpenses] = useState([]);
+  
+    useEffect(() => {
+      const fetchTripDetails = async () => {
+        const response = await TripService.getTripDetails(id);
+        setTrip(response.data);
+        setExpenses(response.data.expenses);
+      };
+      fetchTripDetails();
+    }, [id]);
+  
+    return (
+      <div className="trip-details">
+        {trip && (
+          <>
+            <h2>{trip.name}</h2>
+            <p>{trip.location}</p>
+            <h3>Expenses</h3>
+            <ul>
+              {expenses.map((expense) => (
+                <li key={expense.id}>
+                  {expense.name}: ${expense.amount}
+                </li>
+              ))}
+            </ul>
+            <AddExpense tripId={id} />
+          </>
+        )}
+      </div>
+    );
+  }
+
+  
+
+/*const TripDetails = () => {
     const { id } = useParams();
     const [tripDetails, setTripDetails] = useState(null);
 
@@ -16,7 +53,7 @@ const TripDetails = () => {
         /*const fetchHoot = async () => {
           const { hoot } = await hootService.showHoot(id);
           setHoot(hoot);
-        };*/
+        };
         setTripDetails({
             id, 
             name: 'London Adventure',
@@ -58,6 +95,6 @@ const TripDetails = () => {
       );
 
     };
-
+*/
 
 export default TripDetails; 

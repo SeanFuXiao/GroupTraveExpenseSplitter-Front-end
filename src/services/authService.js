@@ -1,4 +1,56 @@
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+import axios from 'axios';
+import SigninForm from "./pages/SigninForm";
+
+const API_URL = 'https://yourapi.com/api/';
+
+export const signIn = async (username, password) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/signin`, { username, password });
+    const token = response.data.token;
+    if (token) {
+      localStorage.setItem('token', token); // Save token to localStorage
+    }
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error signing in');
+  }
+};
+
+// Sign up function
+export const signUp = async (username, email, password) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/signup`, { username, email, password });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error signing up');
+  }
+};
+
+// Get token
+export const getToken = () => {
+  return localStorage.getItem('token');
+};
+
+// Logout function
+export const logout = () => {
+  localStorage.removeItem('token');
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 const getUser = () => {
     const token = localStorage.getItem('token');
@@ -50,6 +102,6 @@ const signin = async (user) => {
 const signout = () => {
   localStorage.removeItem('token');
 };
- export { signup, signin, getUser, signout};
+ export { signup, signin, getUser, signout};*/
  
 

@@ -1,9 +1,9 @@
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+//const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 
-import { getToken } from './authService'
+//import { getToken } from './authService'
 
-export const fetchTrips = async () => {
+/*export const fetchTrips = async () => {
   const token = getToken();
 
   const response = await fetch(`${BACKEND_URL}/trips`, {
@@ -16,8 +16,38 @@ export const fetchTrips = async () => {
 
   const data = await response.json();
   return data;
-};
+};*/
+import axios from 'axios';
 
+const API_URL = 'https://yourapi.com/api/';
+
+class TripService {
+  getTrips() {
+    return axios.get(API_URL + 'trips', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+
+  getTripDetails(id) {
+    return axios.get(`${API_URL}trips/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+
+  addExpense(tripId, expenseData) {
+    return axios.post(`${API_URL}trips/${tripId}/expenses`, expenseData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  }
+}
+
+export default new TripService();
 
 
 
