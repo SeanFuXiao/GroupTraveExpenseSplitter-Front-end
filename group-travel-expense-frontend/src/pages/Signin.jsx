@@ -16,7 +16,7 @@ const Signin = () => {
       ...prevData,
       [name]: value,
     }));
-    setErrorMessage(""); // 清除之前的错误信息
+    setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
@@ -24,9 +24,8 @@ const Signin = () => {
 
     try {
       await login(formData);
-      navigate("/dashboard"); // 登录成功后跳转到 Dashboard
+      navigate("/dashboard");
     } catch (error) {
-      // 显示错误信息
       setErrorMessage(error.message);
     }
   };
