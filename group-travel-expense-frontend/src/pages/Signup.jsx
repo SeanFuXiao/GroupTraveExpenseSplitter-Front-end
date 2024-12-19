@@ -17,24 +17,30 @@ const Signup = () => {
       ...prevData,
       [name]: value,
     }));
-    setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.passwordConf) {
       setErrorMessage("Passwords do not match");
       return;
     }
 
     try {
-      await signup({
+      const response = await signup({
         username: formData.username,
         password: formData.password,
       });
-      navigate("/signin");
+
+      if (response.error) {
+        setErrorMessage(response.error);
+      } else {
+        navigate("/signin");
+      }
     } catch (error) {
-      setErrorMessage(error.message || "Signup failed. Please try again.");
+      console.error("Signup Error Debug:", error);
+      setErrorMessage("Signup failed. Please try again.");
     }
   };
 

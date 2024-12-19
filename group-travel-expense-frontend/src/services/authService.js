@@ -3,10 +3,9 @@ import api from "./api";
 export const signup = async (formData) => {
   try {
     const res = await api.post("/api/auth/register", formData);
-    localStorage.setItem("token", res.data.token);
     return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Signup failed");
+    throw error.response?.data || { error: "Signup failed" };
   }
 };
 
@@ -21,7 +20,7 @@ export const login = async (credentials) => {
     localStorage.setItem("token", res.data.token);
     return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Login failed");
+    throw new Error("Invalid username or password. Please try again.");
   }
 };
 
@@ -30,7 +29,7 @@ export const getUser = async (id) => {
     const res = await api.get(`/api/auth/${id}`);
     return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Failed to fetch user");
+    handleError(error);
   }
 };
 
@@ -39,7 +38,7 @@ export const updateUser = async (id, updatedData) => {
     const res = await api.put(`/api/auth/${id}`, updatedData);
     return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Failed to update user");
+    handleError(error);
   }
 };
 
@@ -48,7 +47,7 @@ export const deleteUser = async (id) => {
     const res = await api.delete(`/api/auth/${id}`);
     return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Failed to delete user");
+    handleError(error);
   }
 };
 
@@ -58,5 +57,12 @@ export const logout = () => {
 
 export const getToken = () => {
   const token = localStorage.getItem("token");
-  return token;
+  return token || null;
+};
+
+const handleError = (error) => {
+  console.error("API Error:", error.response || error.message);
+  throw new Error(
+    error.response?.data?.error || "An unexpected error occurred."
+  );
 };

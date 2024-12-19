@@ -1,26 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getToken, logout } from "../services/authService";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const token = getToken();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!getToken());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const token = getToken();
+      setIsLoggedIn(!!token);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogout = () => {
     logout();
+    setIsLoggedIn(false);
     navigate("/signin");
   };
 
   return (
     <nav>
       <ul>
-        {token ? (
+        {isLoggedIn ? (
           <>
             <li>
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/trips">Trips</Link>
+              <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
               <button onClick={handleLogout}>Logout</button>
