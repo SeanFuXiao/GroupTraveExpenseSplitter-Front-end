@@ -1,41 +1,72 @@
-import axios from 'axios';
-import SignIn from "../pages/SignIn";
+import api from "./api";
 
-const API_URL = 'https://yourapi.com/api/';
-
-export const signIn = async (username, password) => {
+export const signup = async (formData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/signin`, { username, password });
-    const token = response.data.token;
-    if (token) {
-      localStorage.setItem('token', token); // Save token to localStorage
+    const res = await api.post("/api/auth/register", formData);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data || { error: "Signup failed" };
+  }
+};
+
+export const login = async (credentials) => {
+  try {
+    const res = await api.post("/api/auth/login", credentials);
+
+    if (res.data.error) {
+      throw new Error(res.data.error);
     }
-    return response.data;
+
+    localStorage.setItem("token", res.data.token);
+    return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Error signing in');
+    throw new Error("Invalid username or password. Please try again.");
   }
 };
 
-// Sign up function
-export const signUp = async (username, email, password) => {
+export const getUser = async (id) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/signup`, { username, email, password });
-    return response.data;
+    const res = await api.get(`/api/auth/${id}`);
+    return res.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Error signing up');
+    handleError(error);
   }
 };
 
-// Get token
-export const getToken = () => {
-  return localStorage.getItem('token');
+export const updateUser = async (id, updatedData) => {
+  try {
+    const res = await api.put(`/api/auth/${id}`, updatedData);
+    return res.data;
+  } catch (error) {
+    handleError(error);
+  }
 };
 
-// Logout function
+export const deleteUser = async (id) => {
+  try {
+    const res = await api.delete(`/api/auth/${id}`);
+    return res.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const logout = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem("token");
 };
 
+export const getToken = () => {
+  const token = localStorage.getItem("token");
+  return token || null;
+};
+
+const handleError = (error) => {
+  console.error("API Error:", error.response || error.message);
+  throw new Error(
+    error.response?.data?.error || "An unexpected error occurred."
+  );
+};
+ 
 
 
 

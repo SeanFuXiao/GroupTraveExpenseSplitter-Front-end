@@ -1,56 +1,100 @@
-import { useState } from 'react'; 
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signup } from "../services/authService";
 //import * as authService from '../../services/authService';
 
 
-function SignUp() {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-  
-    const handleSignUp = async (e) => {
-      e.preventDefault();
-      try {
-        SignUp(username, email, password);
-        navigate('/signin');
-      } catch (err) {
-        setError('Error creating an account, please try again.');
+const Signup = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    passwordConf: "",
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.passwordConf) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await signup({
+        username: formData.username,
+        password: formData.password,
+      });
+
+      if (response.error) {
+        setErrorMessage(response.error);
+      } else {
+        navigate("/signin");
       }
-    };
-  
-    return (
-      <div className="form-container">
-        <h2>Sign Up</h2>
-        {error && <p className="error">{error}</p>}
-        <form onSubmit={handleSignUp}>
+    } catch (error) {
+      console.error("Signup Error Debug:", error);
+      setErrorMessage("Signup failed. Please try again.");
+    }
+  };
+
+  return (
+    <div>
+      <h2>Sign Up</h2>
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
             required
           />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
           <input
             type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             required
           />
-          <input type="submit" value="Sign Up" />
-        </form>
-      </div>
-    );
-  }
+        </div>
+        <div>
+          <label htmlFor="passwordConf">Confirm Password:</label>
+          <input
+            type="password"
+            id="passwordConf"
+            name="passwordConf"
+            value={formData.passwordConf}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>
+        Already have an account? <a href="/signin">Sign In</a>
+      </p>
+    </div>
+  );
+};
+
+export default Signup;
+
 
 
 
@@ -136,4 +180,3 @@ function SignUp() {
 */
 
 
-export default SignUp; 

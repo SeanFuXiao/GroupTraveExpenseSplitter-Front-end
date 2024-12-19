@@ -20,34 +20,16 @@
 import axios from 'axios';
 
 const API_URL = 'https://yourapi.com/api/';
+import { getToken } from './authService';
 
-class TripService {
-  getTrips() {
-    return axios.get(API_URL + 'trips', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-  }
 
-  getTripDetails(id) {
-    return axios.get(`${API_URL}trips/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-  }
-
-  addExpense(tripId, expenseData) {
-    return axios.post(`${API_URL}trips/${tripId}/expenses`, expenseData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-  }
-}
-
-export default new TripService();
+export const fetchTrips = async () => {
+  const token = getToken();
+  const response = await axios.get(`${API_URL}/trips`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
 
 
 
