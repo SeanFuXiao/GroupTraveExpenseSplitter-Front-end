@@ -41,7 +41,7 @@ const Signup = () => {
         navigate("/signin");
       }
     } catch (error) {
-      console.error("Signup Error Debug:", error);
+      //console.error("Signup Error Debug:", error);
       setErrorMessage("Signup failed. Please try again.");
     }
   };

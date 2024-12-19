@@ -2,7 +2,7 @@ import api from "./api";
 
 export const signup = async (formData) => {
   try {
-    const res = await api.post("/api/auth/register", formData);
+  //const res = await api.post("/api/auth/register", formData);
     return res.data;
   } catch (error) {
     throw error.response?.data || { error: "Signup failed" };
