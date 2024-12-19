@@ -1,5 +1,5 @@
 import axios from 'axios';
-import SigninForm from "./pages/SigninForm";
+import SignIn from "../pages/SignIn";
 
 const API_URL = 'https://yourapi.com/api/';
 

@@ -13,7 +13,7 @@ function SignUp() {
     const handleSignUp = async (e) => {
       e.preventDefault();
       try {
-        await signUp(username, email, password);
+        SignUp(username, email, password);
         navigate('/signin');
       } catch (err) {
         setError('Error creating an account, please try again.');
@@ -136,4 +136,4 @@ function SignUp() {
 */
 
 
-export default SignupForm; 
+export default SignUp; 

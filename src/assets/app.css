@@ -2,8 +2,8 @@ body {
     font-family: "Arial";
     margin: 0;
     padding: 0;
-    background-color: lightgoldenrodyellow;
-    color: antiquewhite;
+    background-color: rgb(239, 239, 188);
+    color: rgb(177, 246, 183);
 }
 h1, h2, h3 {
     color: yellowgreen;
