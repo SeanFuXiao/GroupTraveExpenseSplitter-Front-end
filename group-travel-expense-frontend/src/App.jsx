@@ -13,14 +13,12 @@ function App() {
   return (
     <Router>
       <div>
-        <Navbar /> {/* 导航栏 */}
+        <Navbar />
         <Routes>
-          {/* 公共路由 */}
           <Route path="/" element={<Landing />} />
           <Route path="/signin" element={<SigninForm />} />
           <Route path="/signup" element={<SignupForm />} />
 
-          {/* 受保护路由 */}
           <Route
             path="/dashboard"
             element={
