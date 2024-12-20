@@ -33,7 +33,7 @@ function TripDetails() {
                 </li>
               ))}
             </ul>
-            <AddExpense tripId={id} />
+            <AddBill tripId={id} />
           </>
         )}
       </div>

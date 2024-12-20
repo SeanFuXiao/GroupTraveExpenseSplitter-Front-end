@@ -1,6 +1,6 @@
-import React from 'react';
+/*import React from 'react';
 import { Link } from 'react-router-dom';
-//import { getTrips } from "../../services/tripService";
+import { getTrips } from "../../services/tripService";
 
 const TripList = () => {
   const [trips, setTrips]= useState([]); //useContext(AuthedUserContext);
@@ -53,4 +53,4 @@ const TripList = () => {
   );
 };
 
-export default TripList;
+export default TripList; */

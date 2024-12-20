@@ -1,4 +1,4 @@
-export const getToken = () => {
+/*export const getToken = () => {
     return localStorage.getItem('token');
   };
   
@@ -8,4 +8,4 @@ export const getToken = () => {
   
   export const clearToken = () => {
     localStorage.removeItem('token');
-  };
+  };*/

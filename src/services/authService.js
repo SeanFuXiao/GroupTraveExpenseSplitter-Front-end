@@ -1,11 +1,11 @@
 import api from "./api";
 
-export const signup = async (formData) => {
+export const signup = async ({ username, password }) => {
   try {
-  //const res = await api.post("/api/auth/register", formData);
-    return res.data;
+    const response = await api.post("/auth/signup", { username, password });
+    return response.data;
   } catch (error) {
-    throw error.response?.data || { error: "Signup failed" };
+    throw error.response ? error.response.data : error;
   }
 };
 
@@ -66,6 +66,7 @@ const handleError = (error) => {
     error.response?.data?.error || "An unexpected error occurred."
   );
 };
+
  
 
 
