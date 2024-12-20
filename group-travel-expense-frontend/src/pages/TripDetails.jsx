@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import AddBill  from "./AddBill";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -82,7 +82,7 @@ const TripDetails = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
               <Link to="/">Home</Link>
@@ -142,6 +142,10 @@ const TripDetails = () => {
           </div>
           <div className="section bills-section">
             <h2>Bills</h2>
+            <Link to={`/trip/${id}/add-bill`}>
+            <button className="navigate-add-bill-btn">Go to Add Bill Page</button>
+          </Link>
+          </div>
             <div className="bills-container">
               {bills.map((bill) => (
                 <div key={bill.id} className="bill-card">
@@ -155,10 +159,11 @@ const TripDetails = () => {
                     >
                     &times;
                   </button>
+                 
                 </div>
               ))}
             </div>
-          </div>
+          
 
     
           <div className="section participants-section">
