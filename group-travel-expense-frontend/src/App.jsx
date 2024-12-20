@@ -6,6 +6,9 @@ import Dashboard from "./pages/Dashboard";
 import TripDetails from "./pages/TripDetails";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
+import AddParticipant from "./pages/AddParticipant";
+import AddTrip from "./pages/AddTrip";
+//import TripList from "./pages/TripList";
 
 function App() {
   
@@ -13,11 +16,13 @@ function App() {
     <Router>
       
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/Landing" element={<Landing />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/trip/:id" element={<TripDetails />} />
+        <Route path="/trip/:tripId" element={<TripDetails />} />
+        <Route path="/addparticipant" element={<AddParticipant />} />
+        <Route path="/add-trip" element={<AddTrip />} />
       </Routes>
     </Router>
   );
