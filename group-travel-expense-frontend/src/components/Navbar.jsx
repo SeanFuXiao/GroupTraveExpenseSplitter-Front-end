@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getToken, logout } from "../services/authService";
+import "../styles/navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(!!getToken());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const token = getToken();
-      setIsLoggedIn(!!token);
-    }, 500);
-    return () => clearInterval(interval);
+    const token = getToken();
+    setIsLoggedIn(!!token);
   }, []);
 
   const handleLogout = () => {
@@ -21,7 +19,15 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
+    <nav className="navbar">
+      <Link to="/" className="logo-container">
+        <img
+          src="/src/assets/images/logo.png"
+          alt="Group Travel Logo"
+          className="logo-image"
+        />
+        <span className="logo-title">Group Travel Expense Splitter</span>
+      </Link>
       <ul>
         {isLoggedIn ? (
           <>
