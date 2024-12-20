@@ -22,9 +22,6 @@ const Landing = () => {
             <li>
               <Link to="/signup">Sign Up</Link>
             </li>
-            <li>
-              <Link to="/">HOME</Link>
-            </li>
           </ul>
         </nav>
       </header>
