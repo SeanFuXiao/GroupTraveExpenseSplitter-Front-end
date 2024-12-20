@@ -1,9 +1,9 @@
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+//const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
 
-import { getToken } from './authService'
+//import { getToken } from './authService'
 
-export const fetchTrips = async () => {
+/*export const fetchTrips = async () => {
   const token = getToken();
 
   const response = await fetch(`${BACKEND_URL}/trips`, {
@@ -16,6 +16,32 @@ export const fetchTrips = async () => {
 
   const data = await response.json();
   return data;
+};*/
+import api from "./api";
+
+export const createTrip = async (tripData) => {
+  const res = await api.post("/api/trips", tripData);
+  return res.data;
+};
+
+export const getAllTrips = async () => {
+  const res = await api.get("/api/trips");
+  return res.data;
+};
+
+export const getTripDetails = async (id) => {
+  const res = await api.get(`/api/trips/${id}`);
+  return res.data;
+};
+
+export const updateTrip = async (id, updatedData) => {
+  const res = await api.put(`/api/trips/${id}`, updatedData);
+  return res.data;
+};
+
+export const deleteTrip = async (id) => {
+  const res = await api.delete(`/api/trips/${id}`);
+  return res.data;
 };
 
 

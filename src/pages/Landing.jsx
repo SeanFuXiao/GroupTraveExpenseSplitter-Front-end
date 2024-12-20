@@ -1,6 +1,6 @@
-/*import React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import travelImage from "../../assets/travel.jpg";
+import travelImage from "../assets/travel.jpg";
 
 const Landing = () => {
   return (
@@ -18,4 +18,4 @@ const Landing = () => {
   );
 };
 
-*/
+export default Landing;
