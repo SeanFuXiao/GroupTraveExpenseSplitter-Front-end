@@ -21,9 +21,9 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/trip/:tripId" element={<TripDetails />} />
+        <Route path="/trip/:id" element={<TripDetails />} />
         <Route path="/addparticipant" element={<AddParticipant />} />
-        <Route path="/add-trip" element={<AddTrip />} />
+        <Route path="/add-trips" element={<AddTrip />} />
         <Route path="/addbill" element={<AddBill />} />
       </Routes>
     </Router>
