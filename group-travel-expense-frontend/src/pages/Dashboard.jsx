@@ -31,6 +31,23 @@ const Dashboard = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    const token = getToken();
+    try {
+      await axios.delete(`${BASE_URL}/api/trips/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setTrips((prevTrips) => prevTrips.filter((trip) => trip.id !== id));
+      console.log(`Trip with ID ${id} deleted successfully.`);
+    } catch (err) {
+      console.error(
+        `Error deleting trip with ID ${id}:`,
+        err.response?.data || err.message
+      );
+    }
+  };
+
   return (
     <div className="dashboard-page">
       <header className="navbar">
@@ -57,7 +74,7 @@ const Dashboard = () => {
         <div className="trips-section">
           <br />
           <button className="add-trip-btn">
-            <Link to="/add-trip">Add Trip</Link>
+            <Link to="/add-trips">Add Trip</Link>
           </button>
           <hr />
           <br />
@@ -67,7 +84,16 @@ const Dashboard = () => {
             <div className="trip-cards-container">
               {trips.map((trip) => (
                 <div key={trip.id} className="trip-card">
-                  <h3>{trip.name}</h3>
+                  <div className="card-header">
+                    <h3>{trip.name}</h3>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(trip.id)}
+                      title="Delete Trip"
+                    >
+                      &times;
+                    </button>
+                  </div>
                   <p>
                     <strong>Start Date:</strong>{" "}
                     {new Date(trip.start_date).toLocaleDateString()}
