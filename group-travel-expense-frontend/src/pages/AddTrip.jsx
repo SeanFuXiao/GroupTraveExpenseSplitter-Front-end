@@ -102,21 +102,22 @@ const AddTrip = () => {
               <a href="/dashboard">Dashboard</a>
             </li>
             <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
               <a href="/signin">Sign Out</a>
             </li>
           </ul>
         </nav>
       </header>
+
       <main className="dashboard-content">
         <h1>Add a New Trip</h1>
+        <br />
+        <br />
+        <br />
         <div className="trip-card">
           <form className="add-trip-form" onSubmit={handleSubmit}>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             {successMessage && (
-              <h4 className="success-message">{successMessage}</h4>
+              <p className="success-message">{successMessage}</p>
             )}
 
             <div className="form-group">
@@ -185,7 +186,7 @@ const AddTrip = () => {
                 Add Participant
               </button>
               {participantError && (
-                <h2 className="participant-error">{participantError}</h2>
+                <p className="participant-error">{participantError}</p>
               )}
             </div>
 
@@ -195,7 +196,6 @@ const AddTrip = () => {
           </form>
         </div>
       </main>
-
       <footer className="footer">
         <p
           style={{
