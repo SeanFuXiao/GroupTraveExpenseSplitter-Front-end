@@ -15,6 +15,20 @@ export const getTripDetails = async (id) => {
   return res.data;
 };
 
+export const getAddNewTrip = async (id) => {
+  const res = await api.get(`/api/trips/${id}`);
+  return res.data;
+};
+export const getAddParticipant = async (id) => {
+  const res = await api.get(`/api/trips/${id}`);
+  return res.data;
+};
+export const getAddBill = async (id) => {
+  const res = await api.get(`/api/trips/${id}`);
+  return res.data;
+};
+
+
 export const updateTrip = async (id, updatedData) => {
   const res = await api.put(`/api/trips/${id}`, updatedData);
   return res.data;

@@ -8,6 +8,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import AddParticipant from "./pages/AddParticipant";
 import AddTrip from "./pages/AddTrip";
+import AddBill from "./pages/AddBill"
 //import TripList from "./pages/TripList";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/trip/:tripId" element={<TripDetails />} />
         <Route path="/addparticipant" element={<AddParticipant />} />
         <Route path="/add-trip" element={<AddTrip />} />
+        <Route path="/addbill" element={<AddBill />} />
       </Routes>
     </Router>
   );

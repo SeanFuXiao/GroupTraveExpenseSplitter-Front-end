@@ -1,68 +1,122 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../styles/addtrip.css"
+import { addTrip } from "../testapi"
+import { useNavigate } from 'react-router-dom';
 
 const AddTrip = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    start_date: "",
-    end_date: "",
-    total_cost: ""
+  const navigate = useNavigate();
+  const [tripData, setTripData] = useState({
+    name: '',
+    start_date: '',
+    end_date: '',
+    total_cost: 0,
+    participants: [],
   });
-  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setTripData({ ...tripData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // API call to submit trip data
     try {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include token in headers
-          "Content-Type": "application/json",
-        },
-      };
+      const response = await fetch('${API_BASE_URL}/trips', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tripData),
+      });
 
-      const response = await axios.post("http://localhost:5000/api/trips", formData, config);
-      setMessage("Trip added successfully!");
+      if (response.ok) {
+        alert('Trip added successfully!');
+        setTripData({
+          name: '',
+          start_date: '',
+          end_date: '',
+          total_cost: 0,
+          participants: [],
+        });
+      } else {
+        alert('Failed to add trip.');
+      }
     } catch (error) {
-      setMessage("Error adding trip. Please check your inputs or token.");
-      console.error(error);
+      console.error('Error adding trip:', error);
     }
   };
 
   return (
-    <div>
-      <h2>Add Trip</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Trip Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="date"
-          name="start_date"
-          value={formData.start_date}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="date"
-          name="end_date"
-          value={formData.end_date}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Add Trip</button>
+    <div className="add-trip">
+      <h1>Add New Trip</h1>
+      <form onSubmit={handleSubmit} className="add-trip-form">
+        <div className="form-group">
+          <label htmlFor="name">Trip Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={tripData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="start_date">Start Date</label>
+          <input
+            type="date"
+            id="start_date"
+            name="start_date"
+            value={tripData.start_date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="end_date">End Date</label>
+          <input
+            type="date"
+            id="end_date"
+            name="end_date"
+            value={tripData.end_date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="total_cost">Total Cost</label>
+          <input
+            type="number"
+            id="total_cost"
+            name="total_cost"
+            value={tripData.total_cost}
+            onChange={handleChange}
+          />
+        </div>
+
+        <button type="submit" className="submit-button">
+          Add Trip
+        </button>
       </form>
+
+      <div className="navigation-buttons">
+        <button
+          className="nav-button"
+          onClick={() => navigate('/addparticipant')}
+        >
+          Add Participant
+        </button>
+        <button
+          className="nav-button"
+          onClick={() => navigate('/addbill')}
+        >
+          Add Bill
+        </button>
+      </div>
     </div>
   );
 };
