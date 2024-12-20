@@ -22,9 +22,11 @@ const AddTrip = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // API call to submit trip data
+    // Correct API URL without `id`
+    const API_URL = 'http://localhost:5173/api/trips';
+
     try {
-      const response = await fetch('${API_BASE_URL}/trips', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(tripData),
@@ -43,7 +45,7 @@ const AddTrip = () => {
         alert('Failed to add trip.');
       }
     } catch (error) {
-      console.error('Error adding trip:', error);
+      console.error('There is An Error:', error);
     }
   };
 

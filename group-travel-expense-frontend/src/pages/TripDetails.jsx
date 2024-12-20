@@ -12,7 +12,7 @@ const TripDetails = () => {
     const fetchTripDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/trips/${Id}`
+          `http://localhost:5173/api/trips/${Id}`
         );
         setTripDetails(response.data);
       } catch (error) {
