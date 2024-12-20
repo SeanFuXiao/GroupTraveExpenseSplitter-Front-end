@@ -1,79 +1,60 @@
 import React, { useState } from 'react';
 import { addParticipant } from '../services/participantService';
 
-const AddParticipants = ({ tripId }) => {
-    const [participantName, setParticipantName] = useState("");
-    const [email, setEmail] = useState("");
-    const [participants, setParticipants] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+const AddParticipant = ({ tripId }) => {
+    const [formData, setFormData] = useState({
+      user_id: "",
+      amount_paid: 0,
+      amount_owed: 0,
+    });
+    const [message, setMessage] = useState("");
   
-    const handleAddParticipant = async (e) => {
+    const handleChange = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+  
+    const handleSubmit = async (e) => {
       e.preventDefault();
-  
-      if (!participantName || !email) {
-        setErrorMessage("Name and Email are required");
-        return;
-      }
-  
       try {
-        const response = await axios.post(
-          `http://localhost:5000/api/trip/${tripId}/participants`,
-          { name: participantName, email }
-        );
-        setParticipants([...participants, response.data]); // Update participant list
-        setParticipantName(""); // Reset input fields
-        setEmail("");
-        setErrorMessage("");
-        setSuccessMessage("Participant added successfully!");
+        const response = await axios.post(`http://localhost:5000/api/trips/${tripId}/participants`, formData);
+        setMessage("Participant added successfully!");
       } catch (error) {
-        console.error("Error adding participant:", error);
-        setErrorMessage(
-          error.response?.data?.message || "Failed to add participant."
-        );
-        setSuccessMessage("");
+        setMessage("Error adding participant.");
+        console.error(error);
       }
     };
   
     return (
       <div>
-        <h2>Add Participants</h2>
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-        <form onSubmit={handleAddParticipant}>
-          <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={participantName}
-              onChange={(e) => setParticipantName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+        <h2>Add Participant</h2>
+        {message && <p>{message}</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="user_id"
+            placeholder="User ID"
+            value={formData.user_id}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="amount_paid"
+            placeholder="Amount Paid"
+            value={formData.amount_paid}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="amount_owed"
+            placeholder="Amount Owed"
+            value={formData.amount_owed}
+            onChange={handleChange}
+          />
           <button type="submit">Add Participant</button>
         </form>
-  
-        <h3>Current Participants</h3>
-        <ul>
-          {participants.map((participant, index) => (
-            <li key={index}>
-              {participant.name} ({participant.email})
-            </li>
-          ))}
-        </ul>
       </div>
     );
   };
   
-  export default AddParticipants;
+  export default AddParticipant;
