@@ -49,18 +49,8 @@ const AddBill = ({ tripId }) => {
     <div className="add-bill">
       <h1>Add New Bill</h1>
       <form onSubmit={handleSubmit} className="add-bill-form">
-        <div className="form-group">
-          <label htmlFor="trip_id">Trip ID</label>
-          <input
-            type="text"
-            id="trip_id"
-            name="trip_id"
-            value={billData.trip_id}
-            onChange={handleChange}
-            required
-            disabled={!!tripId} // Disable if tripId is passed as a prop
-          />
-        </div>
+       
+         
 
         <div className="form-group">
           <label htmlFor="payer_id">Payer ID</label>
@@ -86,17 +76,7 @@ const AddBill = ({ tripId }) => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <input
-            type="text"
-            id="category"
-            name="category"
-            value={billData.category}
-            onChange={handleChange}
-            required
-          />
-        </div>
+       
 
         <div className="form-group">
           <label htmlFor="description">Description</label>
