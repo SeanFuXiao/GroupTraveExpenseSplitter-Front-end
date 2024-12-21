@@ -55,7 +55,7 @@ const Signin = () => {
         </nav>
       </header>
       <div className="signin-page-content">
-        <p class="description-text">
+        <p className="description-text">
           Travel far, travel together, and split the costs easily.
         </p>
         <h2>Sign In</h2>
@@ -89,7 +89,7 @@ const Signin = () => {
         </form>
         <p>
           Don't have an account?{" "}
-          <a href="/signup" class="signup-link">
+          <a href="/signup" className="signup-link">
             Sign Up
           </a>
         </p>
