@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getToken } from "../services/authService";
-import { jwtDecode } from "jwt-decode";
+//import jwtDecode from "jwt-decode";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/dashboard.css";
@@ -14,8 +14,8 @@ const Dashboard = () => {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      const decodedToken = jwtDecode(token);
-      setUsername(decodedToken.username);
+      //const decodedToken = jwtDecode(token);
+      //setUsername(decodedToken.username);
       fetchTrips(token);
     }
   }, []);
@@ -26,7 +26,7 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("Fetched trips:", response.data);
-      setTrips(response.data);
+      setTrips(response.data); // Assuming API returns an array of trips
     } catch (err) {
       console.error("Error fetching trips:", err.response?.data || err.message);
     }
@@ -38,7 +38,7 @@ const Dashboard = () => {
       await axios.delete(`${BASE_URL}/api/trips/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setTrips((prevTrips) => prevTrips.filter((trip) => trip.id !== id));
+      setTrips((prevTrips) => prevTrips.filter((trip) => trip._id !== id)); // Use `_id` as per MongoDB default ID field
       console.log(`Trip with ID ${id} deleted successfully.`);
     } catch (err) {
       console.error(
@@ -68,26 +68,21 @@ const Dashboard = () => {
 
       <main className="dashboard-content">
         <h1>Welcome - {username}</h1>
-        <br />
-        <br />
         <div className="trips-section">
-          <br />
           <button className="add-trip-btn">
             <Link to="/add-trips">Add Trip</Link>
           </button>
           <hr />
-          <br />
           <h2>Your Trips</h2>
-          <br />
           {trips.length > 0 ? (
             <div className="trip-cards-container">
               {trips.map((trip) => (
-                <div key={trip.id} className="trip-card">
+                <div key={trip._id} className="trip-card"> {/* Use _id */}
                   <div className="card-header">
                     <h3>{trip.name}</h3>
                     <button
                       className="delete-btn"
-                      onClick={() => handleDelete(trip.id)}
+                      onClick={() => handleDelete(trip._id)} // Use _id
                       title="Delete Trip"
                     >
                       &times;
@@ -98,10 +93,10 @@ const Dashboard = () => {
                     {new Date(trip.start_date).toLocaleDateString()}
                   </p>
                   <p>
-                  <strong>End Date:</strong>{" "}
+                    <strong>End Date:</strong>{" "}
                     {new Date(trip.end_date).toLocaleDateString()}
                   </p>
-                  <Link to={`/trip/${trip.id}`} className="view-details-btn">
+                  <Link to={`/trip/${trip._id}`} className="view-details-btn"> {/* Use _id */}
                     View Details
                   </Link>
                 </div>
@@ -124,7 +119,7 @@ const Dashboard = () => {
             textShadow: "1px 1px 2px rgba(0, 0, 0, 0.7)",
           }}
         >
-           &copy; 2024 Group Travel Expense Splitter. Authors: Sean and Nowra.
+          &copy; 2024 Group Travel Expense Splitter. Authors: Sean and Nowra.
         </p>
         <ul>
           <a href="mailto:seanfuxiao@gmail.com?subject=Contact%20Us&body=Hi%20Sean%20and%20Nowra,">

@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import "../styles/tripdetails.css";
-
-
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -12,16 +9,13 @@ const TripDetails = () => {
   const [tripDetails, setTripDetails] = useState(null);
   const [bills, setBills] = useState([]);
   const [participants, setParticipants] = useState([]);
-  const [newBill, setNewBill] = useState({ description: "", amount: 0 });
-  const [newParticipant, setNewParticipant] = useState({
-    user_id: "",
-    amount_paid: 0,
-  });
+  const [newBill, setNewBill] = useState({ description: "", amount: 0, payer_id: "" });
+  const [newParticipant, setNewParticipant] = useState({ user_id: "", amount_paid: 0 });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const fetchTripDetails = async () => {
+    const fetchTripData = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(`${BASE_URL}/api/trips/${id}`, {
@@ -36,12 +30,12 @@ const TripDetails = () => {
         );
       }
     };
-    fetchTripDetails();
+    fetchTripData();
   }, [id]);
 
   const addBill = async () => {
-    if (!newBill.description || !newBill.amount) {
-      setErrorMessage("Please provide bill description and amount.");
+    if (!newBill.description || !newBill.amount || !newBill.payer_id) {
+      setErrorMessage("Please provide all bill details.");
       return;
     }
     try {
@@ -52,11 +46,12 @@ const TripDetails = () => {
           trip_id: id,
           description: newBill.description,
           amount: newBill.amount,
+          payer_id: newBill.payer_id,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setBills((prevBills) => [...prevBills, response.data]);
-      setNewBill({ description: "", amount: 0 });
+      setBills((prev) => [...prev, response.data]);
+      setNewBill({ description: "", amount: 0, payer_id: "" });
       setSuccessMessage("Bill added successfully!");
     } catch (error) {
       setErrorMessage(error.response?.data?.error || "Failed to add the bill.");
@@ -65,7 +60,7 @@ const TripDetails = () => {
 
   const addParticipant = async () => {
     if (!newParticipant.user_id || newParticipant.amount_paid === undefined) {
-      setErrorMessage("Please provide user ID and amount paid.");
+      setErrorMessage("Please provide all participant details.");
       return;
     }
     try {
@@ -83,9 +78,7 @@ const TripDetails = () => {
       setNewParticipant({ user_id: "", amount_paid: 0 });
       setSuccessMessage("Participant added successfully!");
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.error || "Failed to add the participant."
-      );
+      setErrorMessage(error.response?.data?.error || "Failed to add the participant.");
     }
   };
 
@@ -115,12 +108,10 @@ const TripDetails = () => {
           <div className="trip-info">
             <h1>{tripDetails.name}</h1>
             <p>
-              <strong>Start Date:</strong>{" "}
-              {new Date(tripDetails.start_date).toLocaleDateString()}
+              <strong>Start Date:</strong> {new Date(tripDetails.start_date).toLocaleDateString()}
             </p>
             <p>
-              <strong>End Date:</strong>{" "}
-              {new Date(tripDetails.end_date).toLocaleDateString()}
+              <strong>End Date:</strong> {new Date(tripDetails.end_date).toLocaleDateString()}
             </p>
             <p>
               <strong>Total Cost:</strong> ${tripDetails.total_cost || 0}
@@ -135,17 +126,19 @@ const TripDetails = () => {
               type="text"
               placeholder="Bill Description"
               value={newBill.description}
-              onChange={(e) =>
-                setNewBill((prev) => ({ ...prev, description: e.target.value }))
-              }
+              onChange={(e) => setNewBill({ ...newBill, description: e.target.value })}
             />
             <input
               type="number"
               placeholder="Amount"
               value={newBill.amount}
-              onChange={(e) =>
-                setNewBill((prev) => ({ ...prev, amount: e.target.value }))
-              }
+              onChange={(e) => setNewBill({ ...newBill, amount: parseFloat(e.target.value) })}
+            />
+            <input
+              type="text"
+              placeholder="Payer ID"
+              value={newBill.payer_id}
+              onChange={(e) => setNewBill({ ...newBill, payer_id: e.target.value })}
             />
             <button onClick={addBill} className="add-bill-btn">
               Add Bill
@@ -159,10 +152,7 @@ const TripDetails = () => {
               placeholder="User ID"
               value={newParticipant.user_id}
               onChange={(e) =>
-                setNewParticipant((prev) => ({
-                  ...prev,
-                  user_id: e.target.value,
-                }))
+                setNewParticipant({ ...newParticipant, user_id: e.target.value })
               }
             />
             <input
@@ -170,10 +160,7 @@ const TripDetails = () => {
               placeholder="Amount Paid"
               value={newParticipant.amount_paid}
               onChange={(e) =>
-                setNewParticipant((prev) => ({
-                  ...prev,
-                  amount_paid: parseFloat(e.target.value),
-                }))
+                setNewParticipant({ ...newParticipant, amount_paid: parseFloat(e.target.value) })
               }
             />
             <button onClick={addParticipant} className="add-participant-btn">
@@ -184,7 +171,7 @@ const TripDetails = () => {
           <div className="section bills-section">
             <h2>Bills</h2>
             {bills.map((bill) => (
-              <div key={bill.id} className="bill-card">
+              <div key={bill._id} className="bill-card">
                 <p>
                   <strong>{bill.description}</strong>
                 </p>
@@ -196,11 +183,12 @@ const TripDetails = () => {
           <div className="section participants-section">
             <h2>Participants</h2>
             {participants.map((participant) => (
-              <div key={participant.username} className="participant-card">
+              <div key={participant.user_id} className="participant-card">
                 <p>
-                  <strong>{participant.username}</strong>
+                  <strong>User ID: {participant.user_id}</strong>
                 </p>
                 <p>Paid: ${participant.amount_paid || 0}</p>
+                <p>Balance: ${participant.balance || 0}</p>
               </div>
             ))}
           </div>
