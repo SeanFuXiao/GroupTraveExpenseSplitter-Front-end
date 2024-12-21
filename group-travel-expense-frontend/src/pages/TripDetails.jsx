@@ -175,6 +175,7 @@ const TripDetails = () => {
             </button>
           </div>
 
+         
           <div className="section add-participant-section">
             <h2>Add Participant</h2>
             <input
@@ -207,6 +208,7 @@ const TripDetails = () => {
                     <strong>{bill.description}</strong>
                   </p>
                   <p>Amount: ${bill.amount}</p>
+                  <p>Payer ID: {bill.payer_id}</p>
                 </div>
               ))
             ) : (
@@ -220,10 +222,11 @@ const TripDetails = () => {
               participants.map((participant) => (
                 <div key={participant.user_id} className="participant-card">
                   <p>
-                    <strong>User ID: {participant.user_id}</strong>
+                    <strong>User ID:</strong> {participant.user_id}
                   </p>
                   <p>Paid: ${participant.amount_paid || 0}</p>
                   <p>Balance: ${participant.balance || 0}</p>
+                  <p>Owed: ${participant.amount_owed || 0}</p>
                 </div>
               ))
             ) : (
