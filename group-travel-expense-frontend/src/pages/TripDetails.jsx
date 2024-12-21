@@ -34,7 +34,6 @@ const TripDetails = () => {
     fetchTripDetails();
   }, [id]);
 
- 
   const addBill = async () => {
     if (!newBill.description || !newBill.amount) {
       setErrorMessage("Please provide bill description and amount.");
@@ -115,7 +114,6 @@ const TripDetails = () => {
         )}
 
         <div className="trip-sections">
-          
           <div className="section add-bill-section">
             <h2>Add Bill</h2>
             <input
@@ -162,7 +160,6 @@ const TripDetails = () => {
             </div>
           </div>
 
-    
           <div className="section participants-section">
             <h2>Participants</h2>
             <div className="participants-container">
