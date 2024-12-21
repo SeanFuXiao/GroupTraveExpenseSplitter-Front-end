@@ -1,65 +1,97 @@
 import React, { useState } from "react";
+import "../styles/addbill.css";
+
+
 
 const AddBill = ({ tripId }) => {
-  const [formData, setFormData] = useState({
-    payer_id: "",
+  const [billData, setBillData] = useState({
+    trip_id: tripId || '',
+    payer_id: '',
     amount: 0,
-    category: "",
-    description: "",
+    category: '',
+    description: '',
   });
-  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setBillData({ ...billData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // API call to submit bill data
     try {
-      const response = await axios.post(`http://localhost:5000/api/trips/${tripId}/bills`, formData);
-      setMessage("Bill added successfully!");
+      const response = await fetch('/api/bills', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(billData),
+      });
+
+      if (response.ok) {
+        alert('Bill added successfully!');
+        setBillData({
+          trip_id: tripId || '',
+          payer_id: '',
+          amount: 0,
+          category: '',
+          description: '',
+        });
+      } else {
+        alert('Failed to add bill.');
+      }
     } catch (error) {
-      setMessage("Error adding bill.");
-      console.error(error);
+      console.error('Error adding bill:', error);
     }
   };
 
   return (
-    <div>
-      <h2>Add Bill</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="payer_id"
-          placeholder="Payer ID"
-          value={formData.payer_id}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="amount"
-          placeholder="Amount"
-          value={formData.amount}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <button type="submit">Add Bill</button>
+    <div className="add-bill">
+      <h1>Add New Bill</h1>
+      <form onSubmit={handleSubmit} className="add-bill-form">
+       
+         
+
+        <div className="form-group">
+          <label htmlFor="payer_id">Payer ID</label>
+          <input
+            type="text"
+            id="payer_id"
+            name="payer_id"
+            value={billData.payer_id}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="amount">Amount</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            value={billData.amount}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+       
+
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            value={billData.description}
+            onChange={handleChange}
+            rows="3"
+          />
+        </div>
+
+        <button type="submit" className="submit-button">
+          Add Bill
+        </button>
       </form>
     </div>
   );
