@@ -13,11 +13,17 @@ const TripDetails = () => {
   const [newParticipant, setNewParticipant] = useState({ user_id: "", amount_paid: 0 });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTripData = async () => {
+      setIsLoading(true);
       try {
         const token = localStorage.getItem("token");
+        if (!token) {
+          setErrorMessage("User is not authenticated.");
+          return;
+        }
         const response = await axios.get(`${BASE_URL}/api/trips/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -28,14 +34,16 @@ const TripDetails = () => {
         setErrorMessage(
           error.response?.data?.error || "Failed to fetch trip details."
         );
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchTripData();
   }, [id]);
 
   const addBill = async () => {
-    if (!newBill.description || !newBill.amount || !newBill.payer_id) {
-      setErrorMessage("Please provide all bill details.");
+    if (!newBill.description || newBill.amount <= 0 || !newBill.payer_id) {
+      setErrorMessage("Please provide valid bill details.");
       return;
     }
     try {
@@ -59,8 +67,8 @@ const TripDetails = () => {
   };
 
   const addParticipant = async () => {
-    if (!newParticipant.user_id || newParticipant.amount_paid === undefined) {
-      setErrorMessage("Please provide all participant details.");
+    if (!newParticipant.user_id || newParticipant.amount_paid < 0) {
+      setErrorMessage("Please provide valid participant details.");
       return;
     }
     try {
@@ -81,6 +89,16 @@ const TripDetails = () => {
       setErrorMessage(error.response?.data?.error || "Failed to add the participant.");
     }
   };
+
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+        setErrorMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, errorMessage]);
 
   return (
     <div className="trip-details-page">
@@ -104,7 +122,9 @@ const TripDetails = () => {
       </header>
 
       <main className="trip-details-content">
-        {tripDetails && (
+        {isLoading ? (
+          <p>Loading trip details...</p>
+        ) : tripDetails ? (
           <div className="trip-info">
             <h1>{tripDetails.name}</h1>
             <p>
@@ -117,7 +137,12 @@ const TripDetails = () => {
               <strong>Total Cost:</strong> ${tripDetails.total_cost || 0}
             </p>
           </div>
+        ) : (
+          <p>Failed to load trip details.</p>
         )}
+
+        {successMessage && <p className="success-message">{successMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         <div className="trip-sections">
           <div className="section add-bill-section">
@@ -134,12 +159,17 @@ const TripDetails = () => {
               value={newBill.amount}
               onChange={(e) => setNewBill({ ...newBill, amount: parseFloat(e.target.value) })}
             />
-            <input
-              type="text"
-              placeholder="Payer ID"
+            <select
               value={newBill.payer_id}
               onChange={(e) => setNewBill({ ...newBill, payer_id: e.target.value })}
-            />
+            >
+              <option value="">Select Payer</option>
+              {participants.map((p) => (
+                <option key={p.user_id} value={p.user_id}>
+                  {p.user_id}
+                </option>
+              ))}
+            </select>
             <button onClick={addBill} className="add-bill-btn">
               Add Bill
             </button>
@@ -170,27 +200,35 @@ const TripDetails = () => {
 
           <div className="section bills-section">
             <h2>Bills</h2>
-            {bills.map((bill) => (
-              <div key={bill._id} className="bill-card">
-                <p>
-                  <strong>{bill.description}</strong>
-                </p>
-                <p>Amount: ${bill.amount}</p>
-              </div>
-            ))}
+            {bills.length > 0 ? (
+              bills.map((bill) => (
+                <div key={bill._id} className="bill-card">
+                  <p>
+                    <strong>{bill.description}</strong>
+                  </p>
+                  <p>Amount: ${bill.amount}</p>
+                </div>
+              ))
+            ) : (
+              <p>No bills added yet.</p>
+            )}
           </div>
 
           <div className="section participants-section">
             <h2>Participants</h2>
-            {participants.map((participant) => (
-              <div key={participant.user_id} className="participant-card">
-                <p>
-                  <strong>User ID: {participant.user_id}</strong>
-                </p>
-                <p>Paid: ${participant.amount_paid || 0}</p>
-                <p>Balance: ${participant.balance || 0}</p>
-              </div>
-            ))}
+            {participants.length > 0 ? (
+              participants.map((participant) => (
+                <div key={participant.user_id} className="participant-card">
+                  <p>
+                    <strong>User ID: {participant.user_id}</strong>
+                  </p>
+                  <p>Paid: ${participant.amount_paid || 0}</p>
+                  <p>Balance: ${participant.balance || 0}</p>
+                </div>
+              ))
+            ) : (
+              <p>No participants added yet.</p>
+            )}
           </div>
         </div>
       </main>
